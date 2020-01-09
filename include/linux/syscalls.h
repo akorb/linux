@@ -463,6 +463,7 @@ asmlinkage long sys_lseek(unsigned int fd, off_t offset,
 asmlinkage long sys_read(unsigned int fd, char __user *buf, size_t count);
 asmlinkage long sys_write(unsigned int fd, const char __user *buf,
 			  size_t count);
+asmlinkage long sys_hworld();
 asmlinkage long sys_readv(unsigned long fd,
 			  const struct iovec __user *vec,
 			  unsigned long vlen);
@@ -1237,6 +1238,7 @@ int ksys_umount(char __user *name, int flags);
 int ksys_dup(unsigned int fildes);
 int ksys_chroot(const char __user *filename);
 ssize_t ksys_write(unsigned int fd, const char __user *buf, size_t count);
+ssize_t ksys_hworld(void);
 int ksys_chdir(const char __user *filename);
 int ksys_fchmod(unsigned int fd, umode_t mode);
 int ksys_fchown(unsigned int fd, uid_t user, gid_t group);

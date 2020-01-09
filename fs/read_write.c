@@ -623,6 +623,41 @@ SYSCALL_DEFINE3(write, unsigned int, fd, const char __user *, buf,
 	return ksys_write(fd, buf, count);
 }
 
+ssize_t ksys_hworld()
+{
+		mm_segment_t old_fs;
+		unsigned int fd = 1; // stdout
+		size_t count = 12; // length
+		char *buf = "Hello World\n";
+		struct fd f = fdget_pos(fd);
+		ssize_t ret = -EBADF;
+		printk("ksys_hworld: Called\n");
+
+		if (f.file) {
+			loff_t pos, *ppos = file_ppos(f.file);
+			if (ppos) {
+				pos = *ppos;
+				ppos = &pos;
+			}
+
+			old_fs = get_fs();
+			set_fs(KERNEL_DS);
+			ret = vfs_write(f.file, buf, count, ppos);
+			set_fs(old_fs);
+
+			if (ret >= 0 && ppos)
+				f.file->f_pos = pos;
+			fdput_pos(f);
+		}
+		
+		return ret;
+}
+
+SYSCALL_DEFINE0(hworld)
+{
+	return ksys_hworld();
+}
+
 ssize_t ksys_pread64(unsigned int fd, char __user *buf, size_t count,
 		     loff_t pos)
 {

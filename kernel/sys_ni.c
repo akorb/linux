@@ -101,6 +101,7 @@ COND_SYSCALL(quotactl);
 /* fs/readdir.c */
 
 /* fs/read_write.c */
+COND_SYSCALL(hworld);
 
 /* fs/sendfile.c */
 
